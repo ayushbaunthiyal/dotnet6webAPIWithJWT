@@ -1,6 +1,7 @@
 using JWTAuth.Business;
 using JWTAuth.Business.AuthService.Implementation;
 using JWTAuth.Business.AuthService.Interface;
+using JWTAuth.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -30,6 +31,9 @@ builder.Services.AddAuthentication(opt =>
         ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:Audience"]
     };
+
+    opt.SecurityTokenValidators.Clear();
+    opt.SecurityTokenValidators.Add(new MultitenantTokenValidator());
 });
 builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
